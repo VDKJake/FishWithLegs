@@ -47,69 +47,72 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Grounded Check (from standard assets)
-        m_Grounded = false;
-
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundedPos.position, m_GroundRadius, m_GroundLayer);
-        for (int i = 0; i < colliders.Length; i++)
+        if (GlobalValues.GAME_STATE == GlobalValues.GameState.Playing)
         {
-            if (colliders[i].gameObject != gameObject)
-            {
-                m_Grounded = true;
-                m_FrontLegAnim.SetBool("InAir", false);
-            }
-        }
-
-        // Move & Set animations
-        // What the fuck is this code
-        float h = Input.GetAxis("Horizontal");
-        if(h > 0 && m_RigidBody.velocity.x < m_MoveSpeed)
-        {
-            m_RigidBody.velocity = new Vector2(h * (m_RigidBody.velocity.x + m_RigidBody.velocity.normalized.x * 10 * Time.deltaTime) + h, m_RigidBody.velocity.y);
-            m_FrontLegAnim.speed = Mathf.Abs((m_RigidBody.velocity.x * 0.1f) + 0.5f);
-        }
-        else if(h < 0 && m_RigidBody.velocity.x > -(m_MoveSpeed))
-        {
-            m_RigidBody.velocity = new Vector2((-h * (m_RigidBody.velocity.x + m_RigidBody.velocity.normalized.x * 10 * Time.deltaTime) + h), m_RigidBody.velocity.y);
-            m_FrontLegAnim.speed = Mathf.Abs((m_RigidBody.velocity.x * 0.1f) - 0.5f);
-        }
-        else if(m_RigidBody.velocity.x == 0f)
-        {
-            m_FrontLegAnim.speed = 1f;
-        }
-        //m_RigidBody.velocity = new Vector2(h * (m_RigidBody.velocity.x + m_RigidBody.velocity.normalized.x * 10 * Time.deltaTime) + h, m_RigidBody.velocity.y);
-        m_FrontLegAnim.SetFloat("Velocity", m_RigidBody.velocity.x);
-        
-
-        /*if(m_RigidBody.velocity.x != 0 && m_Grounded)
-        {
-            m_DustParticles.Play();
-            m_DustEmission.rateOverTime = 10 * (1 + Mathf.Abs(m_RigidBody.velocity.x));
-        }
-        else
-        {
-            m_DustParticles.Stop();
-        }*/
-
-        // Flip Sprite
-        if(m_RigidBody.velocity.x < 0 && m_FacingRight == true)
-        {
-            Flip();
-        }
-        else if(m_RigidBody.velocity.x > 0 && m_FacingRight == false)
-        {
-            Flip();
-        }
-
-        // Jump
-        if(m_Grounded && m_JumpPressed)
-        {
+            // Grounded Check (from standard assets)
             m_Grounded = false;
-            m_RigidBody.AddForce(new Vector2(0f, m_JumpHeight));
-            m_FrontLegAnim.SetBool("InAir", true);
-        }
 
-        m_JumpPressed = false;
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundedPos.position, m_GroundRadius, m_GroundLayer);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                if (colliders[i].gameObject != gameObject)
+                {
+                    m_Grounded = true;
+                    m_FrontLegAnim.SetBool("InAir", false);
+                }
+            }
+
+            // Move & Set animations
+            // What the fuck is this code
+            float h = Input.GetAxis("Horizontal");
+            if (h > 0 && m_RigidBody.velocity.x < m_MoveSpeed)
+            {
+                m_RigidBody.velocity = new Vector2(h * (m_RigidBody.velocity.x + m_RigidBody.velocity.normalized.x * 10 * Time.deltaTime) + h, m_RigidBody.velocity.y);
+                m_FrontLegAnim.speed = Mathf.Abs((m_RigidBody.velocity.x * 0.1f) + 0.5f);
+            }
+            else if (h < 0 && m_RigidBody.velocity.x > -(m_MoveSpeed))
+            {
+                m_RigidBody.velocity = new Vector2((-h * (m_RigidBody.velocity.x + m_RigidBody.velocity.normalized.x * 10 * Time.deltaTime) + h), m_RigidBody.velocity.y);
+                m_FrontLegAnim.speed = Mathf.Abs((m_RigidBody.velocity.x * 0.1f) - 0.5f);
+            }
+            else if (m_RigidBody.velocity.x == 0f)
+            {
+                m_FrontLegAnim.speed = 1f;
+            }
+            //m_RigidBody.velocity = new Vector2(h * (m_RigidBody.velocity.x + m_RigidBody.velocity.normalized.x * 10 * Time.deltaTime) + h, m_RigidBody.velocity.y);
+            m_FrontLegAnim.SetFloat("Velocity", m_RigidBody.velocity.x);
+
+
+            /*if(m_RigidBody.velocity.x != 0 && m_Grounded)
+            {
+                m_DustParticles.Play();
+                m_DustEmission.rateOverTime = 10 * (1 + Mathf.Abs(m_RigidBody.velocity.x));
+            }
+            else
+            {
+                m_DustParticles.Stop();
+            }*/
+
+            // Flip Sprite
+            if (m_RigidBody.velocity.x < 0 && m_FacingRight == true)
+            {
+                Flip();
+            }
+            else if (m_RigidBody.velocity.x > 0 && m_FacingRight == false)
+            {
+                Flip();
+            }
+
+            // Jump
+            if (m_Grounded && m_JumpPressed)
+            {
+                m_Grounded = false;
+                m_RigidBody.AddForce(new Vector2(0f, m_JumpHeight));
+                m_FrontLegAnim.SetBool("InAir", true);
+            }
+
+            m_JumpPressed = false;
+        }
     }
 
     private void Flip()
