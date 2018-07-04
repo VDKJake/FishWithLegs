@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     public Slider[] m_FishSliders;
     private GameObject m_UI;
     private GameObject m_PlayerSprite;
+    private GameObject m_FinSprite;
+    private GameObject m_TailSprite;
     private GameObject m_StartupUI;
     private Image m_ColourPreview;
 
@@ -22,13 +24,17 @@ public class GameManager : MonoBehaviour
         m_FishSliders = m_UI.GetComponentsInChildren<Slider>();;
 
         m_PlayerSprite = GameObject.Find("FishSprite");
+        m_FinSprite = GameObject.Find("Fin");
+        m_TailSprite = GameObject.Find("Tail");
 
         //Time.timeScale = 0f;
-	}
+    }
 	
 	void Update ()
     {
         m_PlayerSprite.GetComponent<SpriteRenderer>().color = new Color(m_FishSliders[0].value / 255, m_FishSliders[1].value / 255, m_FishSliders[2].value / 255);
+        m_FinSprite.GetComponent<SpriteRenderer>().color = new Color(m_FishSliders[0].value / 255, m_FishSliders[1].value / 255, m_FishSliders[2].value / 255);
+        m_TailSprite.GetComponent<SpriteRenderer>().color = new Color(m_FishSliders[0].value / 255, m_FishSliders[1].value / 255, m_FishSliders[2].value / 255);
         m_ColourPreview.color = new Color(m_FishSliders[0].value / 255, m_FishSliders[1].value / 255, m_FishSliders[2].value / 255);
     }
 

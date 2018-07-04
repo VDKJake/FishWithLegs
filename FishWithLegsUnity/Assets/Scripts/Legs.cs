@@ -6,6 +6,7 @@ public class Legs : MonoBehaviour
 {
     [SerializeField] private AudioSource m_ParentAudio;
     [SerializeField] private AudioClip m_StepClip;
+    [SerializeField] private BoxCollider2D m_KickCollider;
 
     private PlayerMovement m_MoveScript;
 
@@ -29,5 +30,15 @@ public class Legs : MonoBehaviour
     public void DustBurst()
     {
         m_MoveScript.DustBurst();
+    }
+
+    public void Kick()
+    {
+        m_KickCollider.enabled = true;
+    }
+
+    public void EndKick()
+    {
+        m_KickCollider.enabled = false;
     }
 }

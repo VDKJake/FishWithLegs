@@ -68,12 +68,18 @@ public class PlayerMovement : MonoBehaviour
             if (h > 0 && m_RigidBody.velocity.x < m_MoveSpeed)
             {
                 m_RigidBody.velocity = new Vector2(h * (m_RigidBody.velocity.x + m_RigidBody.velocity.normalized.x * 10 * Time.deltaTime) + h, m_RigidBody.velocity.y);
-                m_FrontLegAnim.speed = Mathf.Abs((m_RigidBody.velocity.x * 0.1f) + 0.5f);
+                if (m_FrontLegAnim.GetCurrentAnimatorStateInfo(0).IsName("FishRun"))
+                {
+                    m_FrontLegAnim.speed = Mathf.Abs((m_RigidBody.velocity.x * 0.1f) + 0.5f);
+                }
             }
             else if (h < 0 && m_RigidBody.velocity.x > -(m_MoveSpeed))
             {
                 m_RigidBody.velocity = new Vector2((-h * (m_RigidBody.velocity.x + m_RigidBody.velocity.normalized.x * 10 * Time.deltaTime) + h), m_RigidBody.velocity.y);
-                m_FrontLegAnim.speed = Mathf.Abs((m_RigidBody.velocity.x * 0.1f) - 0.5f);
+                if(m_FrontLegAnim.GetCurrentAnimatorStateInfo(0).IsName("FishRun"))
+                {
+                    m_FrontLegAnim.speed = Mathf.Abs((m_RigidBody.velocity.x * 0.1f) - 0.5f);
+                }
             }
             else if (m_RigidBody.velocity.x == 0f)
             {
@@ -94,11 +100,11 @@ public class PlayerMovement : MonoBehaviour
             }*/
 
             // Flip Sprite
-            if (m_RigidBody.velocity.x < 0 && m_FacingRight == true)
+            if (m_RigidBody.velocity.x < -0.1 && m_FacingRight == true)
             {
                 Flip();
             }
-            else if (m_RigidBody.velocity.x > 0 && m_FacingRight == false)
+            else if (m_RigidBody.velocity.x > 0.1 && m_FacingRight == false)
             {
                 Flip();
             }
@@ -109,6 +115,23 @@ public class PlayerMovement : MonoBehaviour
                 m_Grounded = false;
                 m_RigidBody.AddForce(new Vector2(0f, m_JumpHeight));
                 m_FrontLegAnim.SetBool("InAir", true);
+            }
+
+
+            if (m_Grounded)
+            {
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    m_FrontLegAnim.speed = 1f;
+                    m_FrontLegAnim.SetTrigger("Kick");
+                }
+            }
+
+            if (m_FrontLegAnim.GetCurrentAnimatorStateInfo(0).IsName("Kick"))
+            {
+                m_FrontLegAnim.speed = 1f;
+                m_RigidBody.velocity = new Vector2(20f, 0f);
+                print("kick");
             }
 
             m_JumpPressed = false;
