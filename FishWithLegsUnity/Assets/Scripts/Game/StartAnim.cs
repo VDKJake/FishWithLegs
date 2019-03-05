@@ -10,12 +10,14 @@ public class StartAnim : MonoBehaviour
     private bool m_OtherAnimPlayed;
     private float m_StepNum;
     private float m_BackStepNum;
+    private float m_StartSize;
 
     private float m_CurrentLerpTime;
     // Use this for initialization
     void Start ()
     {
         m_Camera = GetComponent<Camera>();
+        m_StartSize = m_Camera.orthographicSize;
         m_StepNum = 0.0f;
         m_BackStepNum = 0.0f;
     }
@@ -27,7 +29,7 @@ public class StartAnim : MonoBehaviour
         {
             m_StepNum += Time.deltaTime;
             float perc = m_StepNum / 1f;
-            PositionSizeLerp(0, -2.5f, 10, 4, perc);
+            PositionSizeLerp(0, -2.5f, m_StartSize, 4, perc);
             if (m_Camera.orthographicSize == 4)
             {
                 m_AnimPlayed = true;
@@ -38,8 +40,8 @@ public class StartAnim : MonoBehaviour
         {
             m_BackStepNum += Time.deltaTime;
             float perc = m_BackStepNum / 1f;
-            PositionSizeLerp(-2.5f, 0, 4, 10, perc);
-            if (m_Camera.orthographicSize == 10)
+            PositionSizeLerp(-2.5f, 0, 4, m_StartSize, perc);
+            if (m_Camera.orthographicSize == m_StartSize)
             {
                 m_OtherAnimPlayed = true;
             }

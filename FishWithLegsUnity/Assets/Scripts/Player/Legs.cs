@@ -7,6 +7,7 @@ public class Legs : MonoBehaviour
     [SerializeField] private AudioSource m_ParentAudio;
     [SerializeField] private AudioClip m_StepClip;
     [SerializeField] private BoxCollider2D m_KickCollider;
+    [SerializeField] private AudioClip m_LaserChargeClip;
 
     private PlayerMovement m_MoveScript;
 
@@ -40,5 +41,15 @@ public class Legs : MonoBehaviour
     public void EndKick()
     {
         m_KickCollider.enabled = false;
+    }
+
+    public void LaserCharge()
+    {
+        m_ParentAudio.PlayOneShot(m_LaserChargeClip);
+    }
+
+    public void Divekick()
+    {
+        m_MoveScript.StartCoroutine("Divekick");
     }
 }
