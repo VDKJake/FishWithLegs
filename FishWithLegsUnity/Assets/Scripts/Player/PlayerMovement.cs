@@ -66,6 +66,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     m_Grounded = true;
                     m_FrontLegAnim.SetBool("InAir", false);
+                    if(m_FrontLegAnim.GetCurrentAnimatorStateInfo(0).IsName("FishDiveKick"))
+                    {
+                        m_RigidBody.velocity = new Vector2(0f, 0f);
+                    }
                 }
             }
 
@@ -76,11 +80,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (m_FacingRight)
                 {
-                    m_RigidBody.velocity = new Vector2(30f, -30f);
+                    m_RigidBody.velocity = new Vector2(30f, -70f);
                 }
                 else
                 {
-                    m_RigidBody.velocity = new Vector2(-30f, -30f);
+                    m_RigidBody.velocity = new Vector2(-30f, -70f);
                 }
             }
             else if (h > 0 && m_RigidBody.velocity.x < m_MoveSpeed && !m_FrontLegAnim.GetCurrentAnimatorStateInfo(0).IsName("Fire") && !m_FrontLegAnim.GetCurrentAnimatorStateInfo(0).IsName("FishDiveKickJump"))
@@ -223,7 +227,7 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator Divekick()
     {
         m_Attacking = true;
-        m_RigidBody.velocity = new Vector2(0f, 25f);
+        m_RigidBody.velocity = new Vector2(0f, 35f);
         yield return new WaitForSeconds(0.5f);
         
 

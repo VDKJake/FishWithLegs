@@ -11,13 +11,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject m_MapPrefab4;
     [SerializeField] private GameObject m_EnemyPrefab;
 
+    [SerializeField] private GameObject m_PlayerSprite;
+    [SerializeField] private GameObject m_FinSprite;
+    [SerializeField] private GameObject m_TailSprite;
+    [SerializeField] private GameObject m_HeadTopSprite;
+    [SerializeField] private GameObject m_HeadBottomSprite;
+
     public Slider[] m_FishSliders;
     private GameObject m_UI;
-    private GameObject m_PlayerSprite;
-    private GameObject m_FinSprite;
-    private GameObject m_TailSprite;
-    private GameObject m_HeadTopSprite;
-    private GameObject m_HeadBottomSprite;
     private GameObject m_StartupUI;
     private Image m_ColourPreview;
 
@@ -31,30 +32,23 @@ public class GameManager : MonoBehaviour
         m_ColourPreview = GameObject.Find("ColourPreview").GetComponent<Image>();
         m_FishSliders = m_UI.GetComponentsInChildren<Slider>();;
 
-        m_PlayerSprite = GameObject.Find("FishSprite");
-        m_FinSprite = GameObject.Find("Fin");
-        m_TailSprite = GameObject.Find("Tail");
-        m_HeadTopSprite = GameObject.Find("HeadTop");
-        m_HeadBottomSprite = GameObject.Find("HeadBottom");
-
         LoadLevel();
         //Time.timeScale = 0f;
-
-        float randColourR = Random.Range(0f, 255f);
-        float randColourG = Random.Range(0f, 255f);
-        float randColourB = Random.Range(0f, 255f);
-
-        m_FishSliders[0].value = randColourR;
-        m_FishSliders[1].value = randColourG;
-        m_FishSliders[2].value = randColourB;
+        
+        m_FishSliders[0].value = Random.Range(0f, 255f);
+        m_FishSliders[1].value = Random.Range(0f, 255f);
+        m_FishSliders[2].value = Random.Range(0f, 255f);
     }
 	
 	void Update ()
     {
         if(GlobalValues.GAME_STATE == GlobalValues.GameState.Startup)
         {
+            print(m_FishSliders[0].value);
             m_PlayerSprite.GetComponent<SpriteRenderer>().color = new Color(m_FishSliders[0].value / 255, m_FishSliders[1].value / 255, m_FishSliders[2].value / 255);
             m_FinSprite.GetComponent<SpriteRenderer>().color = new Color(m_FishSliders[0].value / 255, m_FishSliders[1].value / 255, m_FishSliders[2].value / 255);
+            print(m_FishSliders[0].value / 255);
+            print(m_FinSprite.GetComponent<SpriteRenderer>().color.r);
             m_HeadTopSprite.GetComponent<SpriteRenderer>().color = new Color(m_FishSliders[0].value / 255, m_FishSliders[1].value / 255, m_FishSliders[2].value / 255);
             m_HeadBottomSprite.GetComponent<SpriteRenderer>().color = new Color(m_FishSliders[0].value / 255, m_FishSliders[1].value / 255, m_FishSliders[2].value / 255);
             m_TailSprite.GetComponent<SpriteRenderer>().color = new Color(m_FishSliders[0].value / 255, m_FishSliders[1].value / 255, m_FishSliders[2].value / 255);
